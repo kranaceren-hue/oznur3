@@ -1,0 +1,1131 @@
+```html
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Öznur İçin Döngü Takip ve Yaşam Rehberi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background: linear-gradient(135deg, #fff7f5 0%, #fdf2f4 35%, #f7effa 70%, #f0f4fc 100%);
+      min-height: 100vh;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #fb7185;
+      border-radius: 9999px;
+    }
+    .card-glass {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.75);
+    }
+  </style>
+</head>
+<body class="font-sans text-stone-800 antialiased p-3 sm:p-6 lg:p-8 selection:bg-rose-100 selection:text-rose-900">
+
+  <div class="max-w-6xl mx-auto space-y-6">
+    
+    <header class="card-glass rounded-3xl p-6 sm:p-8 shadow-sm border border-rose-100/90 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold tracking-wide bg-rose-100/90 text-rose-700">
+          <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+          Öznur'a En Yakın Arkadaşından Özel Bir Hediye 💌
+        </div>
+        <h1 class="text-2xl sm:text-3xl font-bold text-stone-800 tracking-tight">
+          Kendini Dinle, Ritmini Yaşa Öznur 🌸
+        </h1>
+        <p class="text-stone-600 text-xs sm:text-sm max-w-xl leading-relaxed">
+          Arkadaşının senin sağlığını, enerjini ve huzurunu düşünerek hazırladığı; adet günün değiştikçe kendini güncelleyen 3 aylık kişisel döngü ve yaşam rehberin.
+        </p>
+      </div>
+
+      <!-- Canlı Gün Rozeti & Ayar Butonu -->
+      <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full md:w-auto">
+        <div id="today-hero-card" class="bg-gradient-to-br from-rose-50 via-amber-50 to-purple-50 p-4 sm:p-5 rounded-2xl border border-rose-200/70 shadow-sm flex items-center gap-4 flex-1">
+          <div id="today-icon" class="w-12 h-12 rounded-2xl bg-white shadow-sm border border-rose-200/50 flex items-center justify-center text-2xl">
+            🍂
+          </div>
+          <div>
+            <div id="today-date-text" class="text-[11px] font-semibold uppercase tracking-wider text-rose-800/80">Bugün: 18 Eylül 2026</div>
+            <div id="today-phase-text" class="text-base sm:text-lg font-extrabold text-stone-900">25. Gün • Geç Luteal (PMS)</div>
+            <div id="today-motto-text" class="text-xs text-rose-700 font-medium">Bedenine şefkat göster, tempoyu yavaşlat</div>
+          </div>
+        </div>
+
+        <button onclick="openSettingsModal()" class="px-4 py-3 bg-white hover:bg-stone-50 active:scale-95 text-stone-700 rounded-2xl border border-stone-200 text-xs font-bold shadow-sm transition flex items-center justify-center gap-2" title="Döngü Ayarlarını Düzenle">
+          ⚙️ <span>Döngü Ayarı</span>
+        </button>
+      </div>
+    </header>
+
+    <div id="friend-support-card" class="relative overflow-hidden bg-gradient-to-br from-rose-100/95 via-pink-50/95 to-purple-100/90 rounded-3xl p-6 sm:p-7 border border-rose-200/80 shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-11 h-11 rounded-2xl bg-white text-rose-500 flex items-center justify-center text-2xl shadow-xs shrink-0">
+            💌
+          </div>
+          <div>
+            <div class="flex items-center gap-2 flex-wrap">
+              <span class="text-xs font-extrabold uppercase tracking-wider text-rose-700">Arkadaşından Öznur'a Günün Notu</span>
+              <span id="friend-note-tag" class="text-[10px] px-2.5 py-0.5 rounded-full bg-white font-bold text-rose-800 shadow-2xs">Sana Özel Boost ✨</span>
+            </div>
+            <h3 id="friend-note-title" class="text-sm sm:text-base font-bold text-stone-800 mt-0.5">Bugün Senin İçin Buradayım</h3>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2 self-stretch sm:self-auto">
+          <button onclick="shuffleFriendNote()" class="flex-1 sm:flex-none px-3.5 py-2 rounded-xl bg-white/90 hover:bg-white active:scale-95 text-rose-700 text-xs font-bold shadow-2xs border border-rose-200/70 transition flex items-center justify-center gap-1.5" title="Yeni bir arkadaş notu oku">
+            <span>🎲</span> <span>Başka Bir Söz Oku</span>
+          </button>
+          <button onclick="triggerFriendHug()" class="flex-1 sm:flex-none px-4 py-2 rounded-xl bg-rose-500 hover:bg-rose-600 active:scale-95 text-white text-xs font-bold shadow-sm transition flex items-center justify-center gap-1.5 whitespace-nowrap">
+            <span>🤗</span> <span>Sarılma Al</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Büyük Vurgulu Arkadaş Notu Metni -->
+      <div class="bg-white/90 backdrop-blur rounded-2xl p-4 sm:p-5 border border-rose-100/90 shadow-2xs space-y-2">
+        <p id="friend-personal-note" class="text-stone-800 text-xs sm:text-sm sm:leading-relaxed font-medium">
+          <!-- JS ile doldurulacak -->
+        </p>
+        <div class="flex items-center justify-between pt-1.5 border-t border-rose-100 text-[11px] text-rose-600/90 font-semibold">
+          <span id="friend-note-footer">Her evrende, her anında arkandayım 💖</span>
+          <span class="text-stone-400 font-normal">Sonsuz sevgiyle</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="daily-advice-box" class="card-glass rounded-3xl p-6 border-l-8 border-purple-400 shadow-sm space-y-4">
+      <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2">
+        <div class="flex items-center gap-2">
+          <span class="text-2xl">💡</span>
+          <div>
+            <h2 class="font-bold text-sm sm:text-base text-stone-800" id="advice-headline">Bugünün Biyolojik Tavsiyesi (Geç Luteal Evre)</h2>
+            <p class="text-xs text-stone-500">Hormon seviyelerine ve beden ihtiyacına göre bugünün önerileri</p>
+          </div>
+        </div>
+        <button onclick="quickLogPeriodToday()" class="self-start sm:self-auto px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 active:scale-95 text-white text-xs font-bold shadow-sm transition flex items-center gap-1.5">
+          🩸 <span>Bugün Regl Oldum!</span>
+        </button>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 pt-1" id="advice-cards-container">
+        <!-- 4 Boyutlu öneriler dinamik render edilecek -->
+      </div>
+    </div>
+
+    <div class="flex flex-col sm:flex-row justify-between items-stretch sm:items-center gap-3">
+      <div class="flex bg-white/80 p-1.5 rounded-2xl border border-stone-200/80 shadow-sm gap-1 self-start">
+        <button id="tab-tracker-btn" onclick="switchMainTab('tracker')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 bg-rose-600 text-white shadow">
+          📅 3 Aylık Çizelge (18 Eylül Başlangıç)
+        </button>
+        <button id="tab-guide-btn" onclick="switchMainTab('guide')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 text-stone-600 hover:text-stone-900 hover:bg-rose-50">
+          🌸 4 Evre Rehberi
+        </button>
+        <button id="tab-stats-btn" onclick="switchMainTab('stats')" class="px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 text-stone-600 hover:text-stone-900 hover:bg-rose-50">
+          📊 Beden Analizim
+        </button>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="exportToCSV()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-2xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white text-xs sm:text-sm font-semibold transition shadow-sm">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+          Hatasız Excel / CSV İndir
+        </button>
+        <button onclick="openResetModal()" class="px-3 py-2.5 rounded-2xl bg-white hover:bg-rose-50 text-stone-600 border border-stone-200 text-xs font-semibold transition shadow-sm" title="Notları Sıfırla">
+          🔄 Sıfırla
+        </button>
+      </div>
+    </div>
+
+    <main id="view-tracker" class="space-y-4">
+      <div class="card-glass p-4 rounded-2xl flex flex-wrap items-center justify-between gap-3 text-xs">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="font-bold text-stone-600">Evre Filtrele:</span>
+          <div class="flex flex-wrap gap-1.5" id="filter-container">
+            <button onclick="setPhaseFilter('all')" class="filter-chip px-3 py-1.5 rounded-full font-semibold transition bg-stone-800 text-white" data-filter="all">Tümü (90 Gün)</button>
+            <button onclick="setPhaseFilter('Menstrüasyon')" class="filter-chip px-3 py-1.5 rounded-full font-semibold transition bg-rose-100 text-rose-800 hover:bg-rose-200" data-filter="Menstrüasyon">🩸 Menstrüasyon</button>
+            <button onclick="setPhaseFilter('Foliküler')" class="filter-chip px-3 py-1.5 rounded-full font-semibold transition bg-emerald-100 text-emerald-800 hover:bg-emerald-200" data-filter="Foliküler">🌱 Foliküler</button>
+            <button onclick="setPhaseFilter('Ovülasyon')" class="filter-chip px-3 py-1.5 rounded-full font-semibold transition bg-amber-100 text-amber-800 hover:bg-amber-200" data-filter="Ovülasyon">☀️ Ovülasyon</button>
+            <button onclick="setPhaseFilter('Erken Luteal')" class="filter-chip px-3 py-1.5 rounded-full font-semibold transition bg-indigo-100 text-indigo-800 hover:bg-indigo-200" data-filter="Erken Luteal">🍁 Erken Luteal</button>
+            <button onclick="setPhaseFilter('Geç Luteal (PMS)')" class="filter-chip px-3 py-1.5 rounded-full font-semibold transition bg-purple-100 text-purple-800 hover:bg-purple-200" data-filter="Geç Luteal (PMS)">🍂 Geç Luteal (PMS)</button>
+          </div>
+        </div>
+        <div class="text-[11px] text-stone-500 font-medium bg-white/70 px-2.5 py-1 rounded-lg border border-stone-200">
+          💡 İstediğin satıra tıkla; hissini, beden sinyalini veya enerji puanını anında kaydet.
+        </div>
+      </div>
+
+      <!-- Çizelge Tablosu (18 Eylül'den başlayan 90 Gün) -->
+      <div class="card-glass rounded-3xl shadow-sm border border-stone-200/80 overflow-hidden">
+        <div class="overflow-x-auto custom-scroll max-h-[620px]">
+          <table class="w-full text-left text-xs sm:text-sm border-collapse">
+            <thead class="sticky top-0 bg-stone-100/95 backdrop-blur z-10 text-stone-600 font-bold border-b border-stone-200 text-xs">
+              <tr>
+                <th class="p-3.5 pl-5">Tarih</th>
+                <th class="p-3.5">Döngü</th>
+                <th class="p-3.5">Evre</th>
+                <th class="p-3.5 text-center">Enerji</th>
+                <th class="p-3.5">Ruh Hali & Mod</th>
+                <th class="p-3.5">Beden Sinyali</th>
+                <th class="p-3.5">Gözlem / Not</th>
+                <th class="p-3.5 pr-5 text-right">Eylem</th>
+              </tr>
+            </thead>
+            <tbody id="cycle-table-body" class="divide-y divide-stone-100 bg-white/50">
+              <!-- JS ile dinamik satırlar üretilir -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+
+    <div id="log-modal" class="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="card-glass bg-white max-w-lg w-full rounded-3xl p-6 sm:p-7 shadow-2xl border border-rose-100 space-y-5 max-h-[90vh] overflow-y-auto custom-scroll">
+        
+        <div class="flex justify-between items-start">
+          <div>
+            <span id="modal-phase-badge" class="px-2.5 py-0.5 rounded-full text-xs font-semibold"></span>
+            <h3 id="modal-title" class="text-xl font-bold text-stone-800 mt-1">Günü Düzenle</h3>
+            <p id="modal-subtitle" class="text-xs text-stone-500">Döngünün günü</p>
+          </div>
+          <button onclick="closeModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center font-bold transition">✕</button>
+        </div>
+
+        <form id="log-form" onsubmit="saveDayLog(event)" class="space-y-4">
+          <input type="hidden" id="modal-day-index" value="">
+
+          <!-- Hızlı Döngü Başlatma Seçeneği -->
+          <div class="flex items-center justify-between p-3.5 rounded-2xl bg-rose-50 border border-rose-200/80">
+            <div class="text-xs text-rose-950 font-bold">
+              <span>🩸 Bu tarihte mi regl oldun?</span>
+              <p class="text-[11px] text-rose-700 font-normal">Tüm gelecek evreler bu tarihten itibaren 1. gün olarak baştan başlar</p>
+            </div>
+            <button type="button" onclick="setCycleStartFromModal()" class="px-3.5 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white text-xs font-bold shadow-xs transition shrink-0 ml-2">
+              Döngüyü Buradan Başlat
+            </button>
+          </div>
+
+          <!-- Enerji Puanı -->
+          <div class="space-y-1 bg-stone-50/80 p-3.5 rounded-2xl border border-stone-200/60">
+            <div class="flex justify-between text-xs font-bold text-stone-700">
+              <span>⚡ Enerji & Odak Seviyesi:</span>
+              <span id="energy-display" class="text-rose-600 font-extrabold text-sm">7 / 10</span>
+            </div>
+            <input type="range" id="modal-energy" min="1" max="10" value="7" oninput="updateEnergyDisplay(this.value)" class="w-full accent-rose-500 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-stone-400 font-medium">
+              <span>😴 Çok Düşük</span>
+              <span>🌿 Dengeli</span>
+              <span>🔥 Zirvede</span>
+            </div>
+          </div>
+
+          <!-- Ruh Hali Etiketleri -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-stone-700 block">🌸 Ruh Hali & Zihinsel Durum:</label>
+            <div class="flex flex-wrap gap-1.5 mb-1.5">
+              <button type="button" onclick="appendTag('modal-mood', 'Huzurlu 🕊️')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-rose-100 text-stone-700 text-xs transition">Huzurlu 🕊️</button>
+              <button type="button" onclick="appendTag('modal-mood', 'Sosyal ✨')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-rose-100 text-stone-700 text-xs transition">Sosyal ✨</button>
+              <button type="button" onclick="appendTag('modal-mood', 'Hassas 🥺')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-rose-100 text-stone-700 text-xs transition">Hassas 🥺</button>
+              <button type="button" onclick="appendTag('modal-mood', 'İçe Dönük 📖')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-rose-100 text-stone-700 text-xs transition">İçe Dönük 📖</button>
+              <button type="button" onclick="appendTag('modal-mood', 'Motive 🎯')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-rose-100 text-stone-700 text-xs transition">Motive 🎯</button>
+              <button type="button" onclick="appendTag('modal-mood', 'Yorgun 💤')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-rose-100 text-stone-700 text-xs transition">Yorgun 💤</button>
+            </div>
+            <input type="text" id="modal-mood" placeholder="Örn: Sakin, kendi halimde bir gün..." class="w-full text-xs sm:text-sm p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400">
+          </div>
+
+          <!-- Beden Sinyalleri -->
+          <div class="space-y-1.5">
+            <label class="text-xs font-bold text-stone-700 block">🩺 Beden Sinyalleri & Fiziksel His:</label>
+            <div class="flex flex-wrap gap-1.5 mb-1.5">
+              <button type="button" onclick="appendTag('modal-symptoms', 'Tatlı İsteği 🍫')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-amber-100 text-stone-700 text-xs transition">Tatlı 🍫</button>
+              <button type="button" onclick="appendTag('modal-symptoms', 'Şişkinlik 💧')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-indigo-100 text-stone-700 text-xs transition">Şişkinlik 💧</button>
+              <button type="button" onclick="appendTag('modal-symptoms', 'Hafif Kramp ⚡')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-rose-100 text-stone-700 text-xs transition">Kramp ⚡</button>
+              <button type="button" onclick="appendTag('modal-symptoms', 'Zindelik 🏃‍♀️')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-emerald-100 text-stone-700 text-xs transition">Zindelik 🏃‍♀️</button>
+              <button type="button" onclick="appendTag('modal-symptoms', 'Göğüs Hassasiyeti 🌸')" class="px-2.5 py-1 rounded-lg bg-stone-100 hover:bg-purple-100 text-stone-700 text-xs transition">Hassasiyet 🌸</button>
+            </div>
+            <input type="text" id="modal-symptoms" placeholder="Örn: Baş ağrısı, hafif gerginlik..." class="w-full text-xs sm:text-sm p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400">
+          </div>
+
+          <!-- Günün Gözlem Sorusu & Not -->
+          <div class="space-y-1">
+            <label id="modal-question-label" class="text-xs font-bold text-rose-700 block"></label>
+            <textarea id="modal-notes" rows="2" placeholder="Günün hislerini buraya yazabilirsin..." class="w-full text-xs sm:text-sm p-3 rounded-xl border border-stone-200 focus:outline-none focus:ring-2 focus:ring-rose-400"></textarea>
+          </div>
+
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" onclick="closeModal()" class="px-4 py-2.5 rounded-xl text-xs font-semibold text-stone-600 hover:bg-stone-100 transition">Vazgeç</button>
+            <button type="submit" class="px-6 py-2.5 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow transition">Kaydet</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="settings-modal" class="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="card-glass bg-white max-w-md w-full rounded-3xl p-6 sm:p-7 shadow-2xl border border-rose-100 space-y-5">
+        <div class="flex justify-between items-start">
+          <div>
+            <span class="px-2.5 py-0.5 rounded-full text-xs font-semibold bg-rose-100 text-rose-700">⚙️ Döngü Esnekliği</span>
+            <h3 class="text-lg sm:text-xl font-bold text-stone-800 mt-1">Döngü Ayarlarını Düzenle</h3>
+            <p class="text-xs text-stone-500">Adet günün değiştikçe takvim anında kendini günceller.</p>
+          </div>
+          <button onclick="closeSettingsModal()" class="w-8 h-8 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 flex items-center justify-center font-bold transition">✕</button>
+        </div>
+
+        <form onsubmit="saveCycleSettings(event)" class="space-y-4 text-xs">
+          <div>
+            <label class="font-bold text-stone-700 block mb-1">🩸 Son Adet Başlangıç Tarihi:</label>
+            <div class="flex gap-2">
+              <input type="date" id="setting-start-date" class="flex-1 p-3 rounded-xl border border-stone-200 focus:ring-2 focus:ring-rose-400 font-semibold text-stone-800 bg-white">
+              <button type="button" onclick="setTodayAsStartDate()" class="px-3 py-2 bg-rose-100 hover:bg-rose-200 text-rose-800 text-xs font-bold rounded-xl whitespace-nowrap">Bugün Yap</button>
+            </div>
+            <p class="text-[11px] text-stone-400 mt-1">Öznur'un döngü başlangıcı: 25 Ağustos 2026</p>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-1">
+              <label class="font-bold text-stone-700">⏳ Ortalama Döngü Uzunluğu:</label>
+              <span id="setting-length-display" class="font-extrabold text-rose-600 text-sm">28 Gün</span>
+            </div>
+            <input type="range" id="setting-cycle-length" min="21" max="38" value="28" oninput="document.getElementById('setting-length-display').textContent = this.value + ' Gün'" class="w-full accent-rose-500 cursor-pointer">
+            <div class="flex justify-between text-[10px] text-stone-400 mt-0.5">
+              <span>21 Gün (Kısa)</span>
+              <span>28 Gün (Standart)</span>
+              <span>38 Gün (Uzun)</span>
+            </div>
+          </div>
+
+          <div class="bg-rose-50/70 p-3.5 rounded-2xl border border-rose-100 text-stone-600 space-y-1">
+            <div class="font-bold text-rose-800">✨ Regl Günü Kayması İçin İpucu:</div>
+            <p class="leading-relaxed text-[11px]">
+              Eğer bu ay 25'inde değil de 29'unda regl olursan, buradaki tarihi <strong>29'u</strong> olarak değiştirip kaydetmen yeterli. Tüm gelecek evreler notların silinmeden anında baştan hesaplanır!
+            </p>
+          </div>
+
+          <div class="flex justify-end gap-2 pt-2">
+            <button type="button" onclick="closeSettingsModal()" class="px-4 py-2.5 rounded-xl font-semibold text-stone-600 hover:bg-stone-100 transition">İptal</button>
+            <button type="submit" class="px-6 py-2.5 rounded-xl font-bold bg-rose-600 hover:bg-rose-700 text-white shadow transition">Ayarları Güncelle</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <section id="view-guide" class="hidden space-y-5">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div class="card-glass p-6 rounded-3xl border-t-4 border-rose-500 space-y-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-base sm:text-lg text-rose-950 flex items-center gap-2">
+              <span>🩸</span> 1. Menstrüasyon (1–5. Günler)
+            </h3>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-rose-100 text-rose-700">Kış Mevsimi</span>
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            <strong>Biyoloji:</strong> Östrojen ve progesteron en alt düzeydedir. Rahim astarı yenilenir, enerji tasarrufu en öncelikli ihtiyaçtır.
+          </p>
+          <div class="bg-rose-50/80 p-3.5 rounded-2xl text-xs space-y-1.5 text-rose-900 border border-rose-100">
+            <div class="font-bold">🌿 Günlük Rehber:</div>
+            <ul class="list-disc list-inside space-y-1 text-stone-700">
+              <li><strong>Beslenme:</strong> Sıcak çorbalar, demir zengini gıdalar (ıspanak, mercimek) ve zencefil çayı.</li>
+              <li><strong>Hareket:</strong> Yalnızca sakin yürüyüşler ve hafif esneme; ağır spordan kaçın.</li>
+              <li><strong>Zihin:</strong> Zor kararları ertele, yalnız kalabileceğin dinlenme alanları aç.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-glass p-6 rounded-3xl border-t-4 border-emerald-500 space-y-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-base sm:text-lg text-emerald-950 flex items-center gap-2">
+              <span>🌱</span> 2. Foliküler Evre (6–13. Günler)
+            </h3>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-100 text-emerald-700">İlkbahar</span>
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            <strong>Biyoloji:</strong> FSH salgılanır ve östrojen yükselir. Dopamin artar, insülin duyarlılığı iyileşir. Yeni fikirler ve hareketlilik doğar.
+          </p>
+          <div class="bg-emerald-50/80 p-3.5 rounded-2xl text-xs space-y-1.5 text-emerald-900 border border-emerald-100">
+            <div class="font-bold">🌿 Günlük Rehber:</div>
+            <ul class="list-disc list-inside space-y-1 text-stone-700">
+              <li><strong>Beslenme:</strong> Fermente gıdalar (kefir), taze yeşil sebzeler ve hafif proteinler.</li>
+              <li><strong>Hareket:</strong> Tempolu koşu, kardiyo veya yeni egzersiz rutinleri.</li>
+              <li><strong>Zihin:</strong> Yeni projeler tasarla, zor konuları öğrenmeye başla, strateji yap.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-glass p-6 rounded-3xl border-t-4 border-amber-500 space-y-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-base sm:text-lg text-amber-950 flex items-center gap-2">
+              <span>☀️</span> 3. Ovülasyon (14–16. Günler)
+            </h3>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-amber-100 text-amber-800">Yaz Mevsimi</span>
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            <strong>Biyoloji:</strong> Östrojen ve testosteron zirve yapar. Sözel hafıza, cazibe ve iletişim gücü tavan noktadadır.
+          </p>
+          <div class="bg-amber-50/80 p-3.5 rounded-2xl text-xs space-y-1.5 text-amber-900 border border-amber-100">
+            <div class="font-bold">🌿 Günlük Rehber:</div>
+            <ul class="list-disc list-inside space-y-1 text-stone-700">
+              <li><strong>Beslenme:</strong> Antioksidan meyveler (çilek, yaban mersini), lifli salatalar ve bol su.</li>
+              <li><strong>Hareket:</strong> Güç antrenmanları, ağırlık ve interval egzersizleri.</li>
+              <li><strong>Zihin:</strong> Önemli görüşmeler, sunumlar, arkadaş buluşmaları ve networking.</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card-glass p-6 rounded-3xl border-t-4 border-purple-500 space-y-3 shadow-sm">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold text-base sm:text-lg text-purple-950 flex items-center gap-2">
+              <span>🍂</span> 4. Luteal Evre (17–28. Günler)
+            </h3>
+            <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-purple-100 text-purple-800">Sonbahar</span>
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">
+            <strong>Biyoloji:</strong> Progesteron hâkimdir, metabolizma günlük 100-300 kcal hızlanır. Son günlerde PMS görülebilir.
+          </p>
+          <div class="bg-purple-50/80 p-3.5 rounded-2xl text-xs space-y-1.5 text-purple-900 border border-purple-100">
+            <div class="font-bold">🌿 Günlük Rehber:</div>
+            <ul class="list-disc list-inside space-y-1 text-stone-700">
+              <li><strong>Beslenme:</strong> Kompleks karbonhidratlar (yulaf, tatlı patates), bitter çikolata, papatya çayı.</li>
+              <li><strong>Hareket:</strong> Pilates, hafif tempolu yürüyüş ve sakinleştirici yoga.</li>
+              <li><strong>Zihin:</strong> Yarım kalan işleri toparla, evini düzenle, kendine karşı fazladan sabırlı ol.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="view-stats" class="hidden space-y-6">
+      <div class="card-glass p-6 sm:p-8 rounded-3xl border border-stone-200/80 space-y-6 shadow-sm">
+        <div>
+          <h2 class="text-xl font-bold text-stone-800">Öznur'un Enerji ve Döngü Haritası</h2>
+          <p class="text-xs text-stone-500">Günlük notlarından otomatik hesaplanan biyolojik ritim özeti.</p>
+        </div>
+        <div class="grid grid-cols-2 sm:grid-cols-5 gap-3" id="stats-summary-cards"></div>
+        <div class="p-4 bg-rose-50/80 rounded-2xl border border-rose-100 text-xs text-stone-700 space-y-1">
+          <span class="font-bold text-rose-800">💡 Kişisel Gözlem Özeti:</span>
+          <p id="stats-advice">Girdilerin arttıkça hangi evrede enerjinin doğal olarak zirve yaptığını ve hangi günlerde dinlenmenin sana iyi geldiğini burada net olarak göreceksin.</p>
+        </div>
+      </div>
+    </section>
+
+    <footer class="text-center py-8 border-t border-rose-200/70 space-y-2 text-xs">
+      <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-100 text-rose-800 font-bold text-xs shadow-2xs">
+        <span>✨</span> Öznur için özel olarak hazırlanmıştır 🌸
+      </div>
+      <p class="font-semibold text-stone-700">
+        En yakın arkadaşın tarafından senin için sevgiyle, kahveyle ve büyük bir özenle kodlandı ☕💕
+      </p>
+      <p class="text-[11px] text-stone-400">
+        Kendine iyi bakmayı ve her gün ne kadar harika olduğunu hatırlamayı asla unutma!
+      </p>
+    </footer>
+
+    <!-- Sıfırlama Onay Modalı -->
+    <div id="reset-modal" class="fixed inset-0 z-50 bg-stone-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="card-glass bg-white max-w-sm w-full rounded-3xl p-6 shadow-2xl border border-stone-200 space-y-4 text-center">
+        <div class="text-3xl">🔄</div>
+        <h4 class="text-base font-bold text-stone-800">Çizelgeyi Sıfırla</h4>
+        <p class="text-xs text-stone-600 leading-relaxed">
+          Tüm notlar ve ayarlar başlangıç değerine dönecektir. Devam etmek istiyor musun?
+        </p>
+        <div class="flex justify-center gap-2 pt-2">
+          <button onclick="closeResetModal()" class="px-4 py-2 rounded-xl text-xs font-semibold text-stone-600 hover:bg-stone-100">İptal</button>
+          <button onclick="confirmResetData()" class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-600 hover:bg-rose-700 text-white shadow">Evet, Sıfırla</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bildirim Baloncuğu -->
+    <div id="toast" class="fixed bottom-5 right-5 z-50 bg-stone-900 text-white px-4 py-3 rounded-2xl text-xs sm:text-sm font-semibold shadow-2xl transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-2">
+      <span id="toast-icon">✨</span>
+      <span id="toast-message">Kayıt güncellendi!</span>
+    </div>
+
+  </div>
+
+  <script>
+    const DEFAULT_START_DATE_STR = '2026-08-25'; // Öznur'un başlangıcı: 25 Ağustos 2026
+    const DEFAULT_CYCLE_LENGTH = 28;
+    const TOTAL_DAYS_GENERATE = 90; // 18 Eylül'den başlayan 3 tam ay
+    const TRACKING_START_DATE = new Date(2026, 8, 18); // 18 Eylül 2026
+
+    const PHASE_CONFIG = {
+      'Menstrüasyon': {
+        emoji: '🩸',
+        colorClass: 'bg-rose-100 text-rose-800 border-rose-200',
+        borderClass: 'border-rose-400',
+        question: 'Bugün bedenini dinleyip zorunlu olmayan işleri erteleyebildin mi?'
+      },
+      'Foliküler': {
+        emoji: '🌱',
+        colorClass: 'bg-emerald-100 text-emerald-800 border-emerald-200',
+        borderClass: 'border-emerald-400',
+        question: 'Yeni bir fikir, öğrenme isteği veya tazelenme hissettin mi?'
+      },
+      'Ovülasyon': {
+        emoji: '☀️',
+        colorClass: 'bg-amber-100 text-amber-900 border-amber-200',
+        borderClass: 'border-amber-400',
+        question: 'Sosyal iletişim ve sözel ifadede kendini ne kadar akıcı buldun?'
+      },
+      'Erken Luteal': {
+        emoji: '🍁',
+        colorClass: 'bg-indigo-100 text-indigo-800 border-indigo-200',
+        borderClass: 'border-indigo-400',
+        question: 'Yarım kalan detayları toparlamak ve düzenlemek nasıl hissettirdi?'
+      },
+      'Geç Luteal (PMS)': {
+        emoji: '🍂',
+        colorClass: 'bg-purple-100 text-purple-800 border-purple-200',
+        borderClass: 'border-purple-400',
+        question: 'Duygusal hassasiyetine veya dinlenme ihtiyacına şefkat gösterebildin mi?'
+      }
+    };
+
+    const PHASE_DAILY_ADVICE = {
+      'Menstrüasyon': {
+        motto: 'Derin dinlenme ve yenilenme zamanı',
+        nutrition: '🍲 Sıcak çorbalar, ıspanak/mercimek (demir) ve zencefil-tarçın çayı.',
+        movement: '🧘‍♀️ Hafif esneme veya 15 dk sakin yürüyüş. Ağır spordan kaçın.',
+        productivity: '📖 Rutin, tek başına yapılan işler; yeni büyük kararları ertele.',
+        selfCare: '🛁 Akşam loş ışıkta ılık duş, erken uyku ve sakin müzik.'
+      },
+      'Foliküler': {
+        motto: 'Yaratıcılık, öğrenme ve enerji uyanışı',
+        nutrition: '🥑 Yeşil yapraklı sebzeler, fermente gıdalar (kefir) ve hafif proteinler.',
+        movement: '🏃‍♀️ Tempolu yürüyüş, koşu veya yeni bir dans/fitness rutini.',
+        productivity: '🎯 Yeni hedefler koyma, beyin fırtınası ve zor projeleri başlatma.',
+        selfCare: '✨ Yeni bir kitap, solo kafe randevusu veya ilham veren bir gezi.'
+      },
+      'Ovülasyon': {
+        motto: 'Sosyal çekim, özgüven ve sözel ifade zirvede',
+        nutrition: '🍓 Renkli taze meyveler, antioksidan salatalar ve bol su.',
+        movement: '🔥 Ağırlık antrenmanı, HIIT kardiyo veya grup sporları.',
+        productivity: '🗣️ Önemli toplantılar, sunumlar ve derin sohbetler.',
+        selfCare: '💃 Arkadaşlarla buluşma, dışarıda keyifli bir akşam ve sosyalleşme.'
+      },
+      'Erken Luteal': {
+        motto: 'Odaklı toparlama ve organize olma vakti',
+        nutrition: '🍠 Tatlı patates, yulaf, kabak çekirdeği ve zengin lifler.',
+        movement: '💪 Orta tempo pilates, kontrollü yürüyüş veya yüzme.',
+        productivity: '📋 Yarım kalan işleri tamamlama, dosyalama ve detayları temizleme.',
+        selfCare: '🧹 Yaşam alanını ferahlatma, gereksiz eşyaları ayıklama ve ajanda planı.'
+      },
+      'Geç Luteal (PMS)': {
+        motto: 'Bedenine şefkat göster, tempoyu yavaşlat',
+        nutrition: '🍫 Bitter çikolata, magnezyum zengini badem/ceviz ve melisa çayı.',
+        movement: '🌿 Sakinleştirici yoga, hafif bel/sırt esnemeleri ve derin nefes.',
+        productivity: '⏳ Çalışma bloklarını 25 dakikaya böl, kendine aşırı yüklenme.',
+        selfCare: '🕊️ Günlük tutma (journaling), ekranı erken kapatma ve dinlenme.'
+      }
+    };
+
+    const FRIEND_PHASE_NOTES = {
+      'Menstrüasyon': {
+        tag: 'Şefkat & Koruma 🕯️',
+        title: 'Öznurcum, Bugün Dünyayı Kurtarmak Zorunda Değilsin',
+        messages: [
+          '“Canım arkadaşım Öznur, bedeninin içinde şu an sessiz bir yenilenme yaşanıyor. Bırak ertelenebilecek her şey beklesin. Sana en yumuşak battaniyeyi ve dumanı tüten bir bitki çayını uzatmışım gibi düşün. Bugün sadece dinlenmek senin hakkın! ☕🛌”',
+          '“Eğer bugün canın hiçbir şey yapmak istemiyorsa, hiçbir şey yapma! Kendini suçlu hissetmene izin vermiyorum. Sen dinlenirken de çok değerlisin, sadece derin bir nefes al. Ben hep yanındayım. 🌸🕊️”',
+          '“Sıcak su torbanı hazırla, sevdiğin bir şeyi izle veya uyu Öznurcum. Bugün bedeninin enerji tasarrufu günü. Kendine bir kraliçe gibi özen göstermeni istiyorum! 💕👑”'
+        ]
+      },
+      'Foliküler': {
+        tag: 'İlham & Hype Boost 🌱🚀',
+        title: 'Gözlerindeki O Işıltıyı Görüyorum Öznur!',
+        messages: [
+          '“İçindeki o taze enerjiyi ve uyanan motivasyonu buradan bile hissedebiliyorum Öznur! Kafandaki yeni fikirleri hayata geçirme vakti geldi. Kim tutar seni, arkanda dağ gibi ben varım! 🚀✨”',
+          '“Bahar enerjin geri döndü güzellik! Zihninin en berrak, hedeflerinin en parlak olduğu günlere adım attın. Bugün o ertelediğin cesur adımı at, harika şeyler başaracaksın! 🌿🎯”',
+          '“Bugün yeni bir kahve dene, yeni bir çalma listesi aç veya yeni bir projeye başla. O tatlı neşen ve tazelenen zekanla bugün her şeyin üstesinden gelirsin! 💃💡”'
+        ]
+      },
+      'Ovülasyon': {
+        tag: 'Manyetizma & Güç Zirvesi ☀️🔥',
+        title: 'Işığını Kimseden Saklama, Parlıyorsun!',
+        messages: [
+          '“Şu an manyetik çekimin, özgüvenin ve sözlerinin gücü en üst noktada Öznur! Girdiğin ortamın havasını değiştirecek güçtesin. O konuşmayı yap, o sunumu parlat... Bugün dünya senin sahnen! ☀️💃”',
+          '“Aynaya baktığında ne kadar harika ve güçlü bir kadın olduğunu gör lütfen! Sözel akıcılığın ve enerjin zirvede. Bugün çözemeyeceğin hiçbir kriz yok. Parla! ✨🦁”',
+          '“Bugün kendine en sevdiğin kıyafeti seç ve başın dik yürü! Senin bu ışığını ve canlılığını izlemek bile bana ilham veriyor. Harikasın sen! 💖👠”'
+        ]
+      },
+      'Erken Luteal': {
+        tag: 'Odak & Denge 🍁💼',
+        title: 'Detayların Efendisi Modu Açıldı',
+        messages: [
+          '“Şu anki odaklanma ve toparlama gücün tam anlamıyla takdire şayan! Yarım kalan ne varsa tereyağından kıl çeker gibi halledeceksin. Ama unutma Öznur: Arada kahve molası vermek şart! 🍁☕”',
+          '“Dağınıklıkları toplamak, listeler yapmak ve planları netleştirmek için muazzam bir evredesin. Adım adım ilerle, senin bu azmine bayılıyorum! 📋🌿”',
+          '“Sessizce ve sakince büyük işler bitirme dönemi. Kendine bir kahve koy ve arkana yaslan; her şeyi ne kadar güzel düzene soktuğunu izle! 🍂✨”'
+        ]
+      },
+      'Geç Luteal (PMS)': {
+        tag: 'Duygusal Kalkan & Koşulsuz Sevgi 🍫🛡️',
+        title: 'Bunu Hormonların Söylüyor, Kendine Sakın Yüklenme',
+        messages: [
+          '“Dinle beni Öznurcum: Eğer bugün her şey üstüne geliyormuş gibi hissediyorsan, bil ki bu sadece hormonlarının dalgası! Sen abartmıyorsun, eksik değilsin. Sadece biraz yoruldun. Çikolatan ve sınırsız anlayışın benden, kimsenin seni üzmesine izin verme! 🍫🥺💕”',
+          '“Bugün kendine karşı ekstra sabırlı ve şefkatli olmanı rica ediyorum. Canın tatlı mı istedi? Ye gitsin! Modun mu düştü? Sarıl yastığına uyu. Ben seni her halinle çok seviyorum ve hep yanındayım. 🫂🤍”',
+          '“Büyük kararlar almayı birkaç günlüğüne kenara bırakıyoruz tamam mı? Bugün dinlenme, sınırlarını koruma ve hayır diyebilme günü. Sen çok değerlisin Öznur, unutma! 🛡️🕊️”'
+        ]
+      }
+    };
+
+    const FRIEND_HUGS = [
+      '“Öznurcum, seni çok seven bir arkadaşın olduğunu ve ne olursa olsun yanında olduğumu unutma! Kocaman sarıldım! 🤗💖”',
+      '“Bunu sana özel olarak hazırladım çünkü sağlığın ve huzurun benim için çok kıymetli. Harikasın! 🌸✨”',
+      '“Bugün kendine ekstra şefkatli davran; su içmeyi ve derin bir nefes almayı unutma tatlım! 💧🌿”',
+      '“Sen kendi ritminde çok güzelsin Öznur, kimseyle yarışma. Bir kahve molası ver ve gülümse! ☕🥰”',
+      '“Bugün dünyayı kurtarmak zorunda değilsin, sadece kendin olman yeterli! Çok seviliyorsun! 🕊️💕”'
+    ];
+
+    let userConfig = {
+      startDateStr: DEFAULT_START_DATE_STR,
+      cycleLength: DEFAULT_CYCLE_LENGTH
+    };
+
+    let trackerData = [];
+    let currentFilter = 'all';
+    let currentNoteIndex = 0;
+
+    function formatISO(d) {
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, '0');
+      const day = String(d.getDate()).padStart(2, '0');
+      return `${y}-${m}-${day}`;
+    }
+
+    function calculatePhase(cycleDay, cycleLength = 28) {
+      const p1 = Math.round(5 * cycleLength / 28);
+      const p2 = Math.round(13 * cycleLength / 28);
+      const p3 = Math.round(16 * cycleLength / 28);
+      const p4 = Math.round(22 * cycleLength / 28);
+
+      if (cycleDay <= p1) return 'Menstrüasyon';
+      if (cycleDay <= p2) return 'Foliküler';
+      if (cycleDay <= p3) return 'Ovülasyon';
+      if (cycleDay <= p4) return 'Erken Luteal';
+      return 'Geç Luteal (PMS)';
+    }
+
+    function initData() {
+      const savedConfig = localStorage.getItem('oznur_cycle_config_2026');
+      if (savedConfig) {
+        try {
+          userConfig = JSON.parse(savedConfig);
+        } catch (e) {
+          console.error('Ayar yüklenemedi:', e);
+        }
+      }
+      
+      const savedLogsStr = localStorage.getItem('oznur_cycle_tracker_data_2026');
+      let savedLogs = {};
+      if (savedLogsStr) {
+        try {
+          const parsed = JSON.parse(savedLogsStr);
+          if (Array.isArray(parsed)) {
+            parsed.forEach(item => {
+              if (item.dateISO) savedLogs[item.dateISO] = item;
+            });
+          }
+        } catch (e) {
+          console.error('Kayıtlar yüklenemedi:', e);
+        }
+      }
+      buildCycleDataset(savedLogs);
+    }
+
+    function buildCycleDataset(preservedLogs = {}) {
+      trackerData = [];
+      const dayNames = ['Pazar', 'Pazartesi', 'Salı', 'Çarşamba', 'Perşembe', 'Cuma', 'Cumartesi'];
+      
+      const startParts = userConfig.startDateStr.split('-');
+      const cycleStartDate = new Date(parseInt(startParts[0]), parseInt(startParts[1]) - 1, parseInt(startParts[2]));
+      
+      const trackingStart = new Date(TRACKING_START_DATE);
+
+      for (let i = 0; i < TOTAL_DAYS_GENERATE; i++) {
+        let currentDate = new Date(trackingStart);
+        currentDate.setDate(trackingStart.getDate() + i);
+
+        // Döngü gününü hesapla
+        const diffTime = currentDate.getTime() - cycleStartDate.getTime();
+        const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+        const cycleDay = (((diffDays % userConfig.cycleLength) + userConfig.cycleLength) % userConfig.cycleLength) + 1;
+        const phase = calculatePhase(cycleDay, userConfig.cycleLength);
+
+        const dateStr = `${currentDate.getDate().toString().padStart(2, '0')}.${(currentDate.getMonth() + 1).toString().padStart(2, '0')}.${currentDate.getFullYear()}`;
+        const dateISO = formatISO(currentDate);
+        const dayName = dayNames[currentDate.getDay()];
+        const isToday = (i === 0);
+
+        const existingLog = preservedLogs[dateISO] || {};
+
+        trackerData.push({
+          id: i,
+          dateISO: dateISO,
+          dateStr: dateStr,
+          dayName: dayName,
+          cycleDay: cycleDay,
+          phase: phase,
+          isToday: isToday,
+          energy: existingLog.energy !== undefined ? existingLog.energy : (phase === 'Ovülasyon' ? 8 : (phase === 'Menstrüasyon' ? 4 : 6)),
+          mood: existingLog.mood || (isToday ? 'Biraz yorgun ama huzurlu 🕊️' : ''),
+          symptoms: existingLog.symptoms || (isToday ? 'Tatlı İsteği 🍫' : ''),
+          notes: existingLog.notes || '',
+          question: PHASE_CONFIG[phase].question
+        });
+      }
+
+      saveToStorage();
+      renderTodayHero();
+      renderTable();
+      renderStats();
+    }
+
+    function saveToStorage() {
+      localStorage.setItem('oznur_cycle_config_2026', JSON.stringify(userConfig));
+      localStorage.setItem('oznur_cycle_tracker_data_2026', JSON.stringify(trackerData));
+    }
+
+    function renderTodayHero() {
+      const todayItem = trackerData[0];
+      if (!todayItem) return;
+
+      const phaseCfg = PHASE_CONFIG[todayItem.phase];
+      const advice = PHASE_DAILY_ADVICE[todayItem.phase];
+
+      document.getElementById('today-icon').textContent = phaseCfg.emoji;
+      document.getElementById('today-date-text').textContent = `Bugün: ${todayItem.dateStr} (${todayItem.dayName})`;
+      document.getElementById('today-phase-text').textContent = `${todayItem.cycleDay}. Gün • ${todayItem.phase}`;
+      document.getElementById('today-motto-text').textContent = advice.motto;
+
+      renderFriendNote(todayItem.phase);
+
+      const adviceBox = document.getElementById('daily-advice-box');
+      adviceBox.className = `card-glass rounded-3xl p-6 border-l-8 ${phaseCfg.borderClass} shadow-sm space-y-4`;
+      document.getElementById('advice-headline').textContent = `Bugünün Biyolojik Tavsiyesi (${todayItem.phase} - ${todayItem.cycleDay}. Gün)`;
+
+      const container = document.getElementById('advice-cards-container');
+      container.innerHTML = `
+        <div class="bg-white/80 p-3.5 rounded-2xl border border-stone-100 shadow-2xs space-y-1">
+          <div class="text-xs font-bold text-emerald-800 flex items-center gap-1.5">
+            <span>🥗</span> Beslenme
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">${advice.nutrition}</p>
+        </div>
+        <div class="bg-white/80 p-3.5 rounded-2xl border border-stone-100 shadow-2xs space-y-1">
+          <div class="text-xs font-bold text-amber-800 flex items-center gap-1.5">
+            <span>🏃‍♀️</span> Egzersiz
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">${advice.movement}</p>
+        </div>
+        <div class="bg-white/80 p-3.5 rounded-2xl border border-stone-100 shadow-2xs space-y-1">
+          <div class="text-xs font-bold text-indigo-800 flex items-center gap-1.5">
+            <span>🧠</span> Odak & Zihin
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">${advice.productivity}</p>
+        </div>
+        <div class="bg-white/80 p-3.5 rounded-2xl border border-stone-100 shadow-2xs space-y-1">
+          <div class="text-xs font-bold text-rose-800 flex items-center gap-1.5">
+            <span>🛁</span> Öz-Şefkat
+          </div>
+          <p class="text-xs text-stone-600 leading-relaxed">${advice.selfCare}</p>
+        </div>
+      `;
+    }
+
+    function renderFriendNote(phase) {
+      const notePack = FRIEND_PHASE_NOTES[phase] || FRIEND_PHASE_NOTES['Geç Luteal (PMS)'];
+      const tagEl = document.getElementById('friend-note-tag');
+      const titleEl = document.getElementById('friend-note-title');
+      const textEl = document.getElementById('friend-personal-note');
+      const footerEl = document.getElementById('friend-note-footer');
+
+      if (tagEl) tagEl.textContent = notePack.tag;
+      if (titleEl) titleEl.textContent = notePack.title;
+      
+      const safeIndex = currentNoteIndex % notePack.messages.length;
+      if (textEl) textEl.textContent = notePack.messages[safeIndex];
+      if (footerEl) footerEl.textContent = `Öznurcum, ${phase} evrende seninleyim (${safeIndex + 1}/${notePack.messages.length}) 💌`;
+    }
+
+    function shuffleFriendNote() {
+      const todayItem = trackerData[0];
+      if (!todayItem) return;
+      const notePack = FRIEND_PHASE_NOTES[todayItem.phase];
+      if (!notePack) return;
+
+      currentNoteIndex = (currentNoteIndex + 1) % notePack.messages.length;
+      renderFriendNote(todayItem.phase);
+      showToast('Yeni arkadaş notun açıldı Öznur! 💌');
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('cycle-table-body');
+      if (!tbody) return;
+      tbody.innerHTML = '';
+
+      const filtered = trackerData.filter(item => {
+        if (currentFilter === 'all') return true;
+        return item.phase === currentFilter;
+      });
+
+      filtered.forEach(item => {
+        const tr = document.createElement('tr');
+        const phaseCfg = PHASE_CONFIG[item.phase];
+
+        tr.className = `transition hover:bg-rose-50/60 cursor-pointer ${item.isToday ? 'bg-amber-50/80 font-semibold border-l-4 border-amber-500' : ''}`;
+        tr.onclick = () => openModal(item.id);
+
+        tr.innerHTML = `
+          <td class="p-3.5 pl-5 whitespace-nowrap">
+            <div class="font-bold text-stone-800 flex items-center gap-1.5">
+              ${item.dateStr}
+              ${item.isToday ? '<span class="text-[10px] px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 font-extrabold uppercase">Bugün</span>' : ''}
+            </div>
+            <div class="text-[11px] text-stone-400 font-normal">${item.dayName}</div>
+          </td>
+          <td class="p-3.5 whitespace-nowrap">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded-lg text-xs font-bold bg-stone-100 text-stone-700 border border-stone-200">
+              ${item.cycleDay}. Gün
+            </span>
+          </td>
+          <td class="p-3.5 whitespace-nowrap">
+            <span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold ${phaseCfg.colorClass}">
+              <span>${phaseCfg.emoji}</span> ${item.phase}
+            </span>
+          </td>
+          <td class="p-3.5 text-center whitespace-nowrap">
+            <div class="inline-flex items-center gap-1 font-bold text-xs ${item.energy >= 8 ? 'text-amber-600' : (item.energy <= 4 ? 'text-rose-500' : 'text-emerald-600')}">
+              <span>${item.energy >= 8 ? '🔥' : (item.energy <= 4 ? '😴' : '⚡')}</span>
+              <span>${item.energy || '-'}/10</span>
+            </div>
+          </td>
+          <td class="p-3.5 max-w-[170px] truncate text-xs text-stone-700">
+            ${item.mood ? `<span>${item.mood}</span>` : '<span class="text-stone-300 italic">-</span>'}
+          </td>
+          <td class="p-3.5 max-w-[170px] truncate text-xs text-stone-700">
+            ${item.symptoms ? `<span>${item.symptoms}</span>` : '<span class="text-stone-300 italic">-</span>'}
+          </td>
+          <td class="p-3.5 max-w-[200px] truncate text-xs text-stone-600">
+            ${item.notes ? item.notes : '<span class="text-stone-300 italic">Not yok</span>'}
+          </td>
+          <td class="p-3.5 pr-5 text-right whitespace-nowrap">
+            <button onclick="event.stopPropagation(); openModal(${item.id})" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-white hover:bg-rose-100 text-rose-700 border border-rose-200 shadow-2xs transition">
+              Düzenle ✏️
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    function openModal(dayId) {
+      const item = trackerData.find(d => d.id === dayId);
+      if (!item) return;
+
+      const phaseCfg = PHASE_CONFIG[item.phase];
+      document.getElementById('modal-day-index').value = item.id;
+      document.getElementById('modal-title').textContent = `${item.dateStr} - ${item.dayName}`;
+      document.getElementById('modal-subtitle').textContent = `Döngünün ${item.cycleDay}. Günü (${item.phase})`;
+      
+      const badge = document.getElementById('modal-phase-badge');
+      badge.textContent = `${phaseCfg.emoji} ${item.phase}`;
+      badge.className = `px-2.5 py-0.5 rounded-full text-xs font-semibold ${phaseCfg.colorClass}`;
+
+      document.getElementById('modal-energy').value = item.energy || 7;
+      updateEnergyDisplay(item.energy || 7);
+
+      document.getElementById('modal-mood').value = item.mood || '';
+      document.getElementById('modal-symptoms').value = item.symptoms || '';
+      document.getElementById('modal-notes').value = item.notes || '';
+      
+      document.getElementById('modal-question-label').textContent = `❓ Günün Sorusu: ${item.question || phaseCfg.question}`;
+      document.getElementById('log-modal').classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('log-modal').classList.add('hidden');
+    }
+
+    function updateEnergyDisplay(val) {
+      document.getElementById('energy-display').textContent = `${val} / 10`;
+    }
+
+    function appendTag(inputId, text) {
+      const input = document.getElementById(inputId);
+      if (!input) return;
+      if (input.value.trim() === '') {
+        input.value = text;
+      } else if (!input.value.includes(text)) {
+        input.value += `, ${text}`;
+      }
+    }
+
+    function saveDayLog(event) {
+      event.preventDefault();
+      const id = parseInt(document.getElementById('modal-day-index').value);
+      const item = trackerData.find(d => d.id === id);
+      if (!item) return;
+
+      item.energy = parseInt(document.getElementById('modal-energy').value);
+      item.mood = document.getElementById('modal-mood').value.trim();
+      item.symptoms = document.getElementById('modal-symptoms').value.trim();
+      item.notes = document.getElementById('modal-notes').value.trim();
+
+      saveToStorage();
+      renderTable();
+      renderStats();
+      closeModal();
+      showToast('Günün gözlemi başarıyla kaydedildi! 🌸');
+    }
+
+    function openSettingsModal() {
+      document.getElementById('setting-start-date').value = userConfig.startDateStr;
+      document.getElementById('setting-cycle-length').value = userConfig.cycleLength;
+      document.getElementById('setting-length-display').textContent = `${userConfig.cycleLength} Gün`;
+      document.getElementById('settings-modal').classList.remove('hidden');
+    }
+
+    function closeSettingsModal() {
+      document.getElementById('settings-modal').classList.add('hidden');
+    }
+
+    function saveCycleSettings(event) {
+      event.preventDefault();
+      const newStart = document.getElementById('setting-start-date').value;
+      const newLength = parseInt(document.getElementById('setting-cycle-length').value);
+
+      if (!newStart) {
+        showToast('Lütfen geçerli bir başlangıç tarihi seçin.');
+        return;
+      }
+
+      userConfig.startDateStr = newStart;
+      userConfig.cycleLength = newLength;
+
+      const preservedLogs = {};
+      trackerData.forEach(item => {
+        if (item.mood || item.symptoms || item.notes) {
+          preservedLogs[item.dateISO] = {
+            energy: item.energy,
+            mood: item.mood,
+            symptoms: item.symptoms,
+            notes: item.notes
+          };
+        }
+      });
+
+      buildCycleDataset(preservedLogs);
+      closeSettingsModal();
+      showToast('Döngü takvimi başarıyla güncellendi! 🌿');
+    }
+
+    function setTodayAsStartDate() {
+      document.getElementById('setting-start-date').value = '2026-09-18';
+    }
+
+    function setCycleStartFromModal() {
+      const id = parseInt(document.getElementById('modal-day-index').value);
+      const item = trackerData.find(d => d.id === id);
+      if (!item) return;
+
+      userConfig.startDateStr = item.dateISO;
+
+      const preservedLogs = {};
+      trackerData.forEach(d => {
+        if (d.mood || d.symptoms || d.notes) {
+          preservedLogs[d.dateISO] = {
+            energy: d.energy,
+            mood: d.mood,
+            symptoms: d.symptoms,
+            notes: d.notes
+          };
+        }
+      });
+
+      buildCycleDataset(preservedLogs);
+      closeModal();
+      showToast(`Yeni döngü ${item.dateStr} tarihinden başlatıldı Öznur! 🩸`);
+    }
+
+    function quickLogPeriodToday() {
+      userConfig.startDateStr = '2026-09-18';
+      
+      const preservedLogs = {};
+      trackerData.forEach(item => {
+        if (item.mood || item.symptoms || item.notes) {
+          preservedLogs[item.dateISO] = {
+            energy: item.energy,
+            mood: item.mood,
+            symptoms: item.symptoms,
+            notes: item.notes
+          };
+        }
+      });
+
+      buildCycleDataset(preservedLogs);
+      showToast('Yeni döngün bugünden itibaren başlatıldı! 🩸');
+    }
+
+    function setPhaseFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('.filter-chip').forEach(btn => {
+        if (btn.getAttribute('data-filter') === filter) {
+          btn.className = 'filter-chip px-3 py-1.5 rounded-full font-semibold transition bg-stone-800 text-white';
+        } else {
+          btn.className = 'filter-chip px-3 py-1.5 rounded-full font-semibold transition bg-stone-100 text-stone-600 hover:bg-stone-200';
+        }
+      });
+      renderTable();
+    }
+
+    function switchMainTab(tab) {
+      document.getElementById('view-tracker').classList.add('hidden');
+      document.getElementById('view-guide').classList.add('hidden');
+      document.getElementById('view-stats').classList.add('hidden');
+
+      const tabs = ['tracker', 'guide', 'stats'];
+      tabs.forEach(t => {
+        const btn = document.getElementById(`tab-${t}-btn`);
+        if (t === tab) {
+          btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 bg-rose-600 text-white shadow';
+        } else {
+          btn.className = 'px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-200 text-stone-600 hover:text-stone-900 hover:bg-rose-50';
+        }
+      });
+
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      if (tab === 'stats') renderStats();
+    }
+
+    function renderStats() {
+      const container = document.getElementById('stats-summary-cards');
+      if (!container) return;
+      const phases = ['Menstrüasyon', 'Foliküler', 'Ovülasyon', 'Erken Luteal', 'Geç Luteal (PMS)'];
+
+      container.innerHTML = '';
+
+      phases.forEach(phase => {
+        const days = trackerData.filter(d => d.phase === phase);
+        const avgEnergy = (days.reduce((acc, curr) => acc + (curr.energy || 0), 0) / (days.length || 1)).toFixed(1);
+        const cfg = PHASE_CONFIG[phase];
+
+        const card = document.createElement('div');
+        card.className = `p-4 rounded-2xl border ${cfg.colorClass} space-y-1 text-center sm:text-left`;
+        card.innerHTML = `
+          <div class="text-xs font-bold flex items-center justify-between">
+            <span>${cfg.emoji} ${phase}</span>
+          </div>
+          <div class="text-2xl font-extrabold text-stone-800">${avgEnergy} <span class="text-xs font-normal text-stone-500">/ 10</span></div>
+          <div class="text-[11px] opacity-80 font-medium">${days.length} Gün</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function exportToCSV() {
+      const headers = ['Tarih', 'Gun', 'Dongu_Gunu', 'Evre', 'Enerji_Puani', 'Ruh_Hali', 'Beden_Sinyali', 'Gozlem_Notu'];
+      
+      const rows = trackerData.map(item => [
+        `"${item.dateStr}"`,
+        `"${item.dayName}"`,
+        item.cycleDay,
+        `"${item.phase}"`,
+        item.energy || '',
+        `"${(item.mood || '').replace(/"/g, '""')}"`,
+        `"${(item.symptoms || '').replace(/"/g, '""')}"`,
+        `"${(item.notes || '').replace(/"/g, '""')}"`
+      ]);
+
+      const csvContent = '\uFEFF' + [headers.join(';'), ...rows.map(r => r.join(';'))].join('\r\n');
+      const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.setAttribute('href', url);
+      link.setAttribute('download', `Oznur_Dongu_Takip_2026.csv`);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      showToast('Excel / CSV dosyanız indirildi! 📥');
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      const text = document.getElementById('toast-message');
+      text.textContent = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 2500);
+    }
+
+    function openResetModal() {
+      document.getElementById('reset-modal').classList.remove('hidden');
+    }
+
+    function closeResetModal() {
+      document.getElementById('reset-modal').classList.add('hidden');
+    }
+
+    function confirmResetData() {
+      localStorage.removeItem('oznur_cycle_config_2026');
+      localStorage.removeItem('oznur_cycle_tracker_data_2026');
+      userConfig = {
+        startDateStr: DEFAULT_START_DATE_STR,
+        cycleLength: DEFAULT_CYCLE_LENGTH
+      };
+      initData();
+      closeResetModal();
+      showToast('Çizelge varsayılana sıfırlandı.');
+    }
+
+    function triggerFriendHug() {
+      const randomMsg = FRIEND_HUGS[Math.floor(Math.random() * FRIEND_HUGS.length)];
+      const toast = document.getElementById('toast');
+      const toastIcon = document.getElementById('toast-icon');
+      const text = document.getElementById('toast-message');
+      
+      toastIcon.textContent = '🤗';
+      text.textContent = randomMsg;
+      
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      toast.className = 'fixed bottom-5 right-5 z-50 bg-rose-600 text-white px-5 py-4 rounded-2xl text-xs sm:text-sm font-semibold shadow-2xl transform transition-all duration-300 flex items-center gap-3 max-w-sm border border-rose-300';
+      
+      setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+        setTimeout(() => {
+          toast.className = 'fixed bottom-5 right-5 z-50 bg-stone-900 text-white px-4 py-3 rounded-2xl text-xs sm:text-sm font-semibold shadow-2xl transform translate-y-24 opacity-0 transition-all duration-300 flex items-center gap-2';
+        }, 300);
+      }, 4000);
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initData);
+    } else {
+      initData();
+    }
+  </script>
+</body>
+</html>
+
+```
